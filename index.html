@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>双鱼工作室 ♓️</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: "PingFang SC", "Microsoft YaHei", "Helvetica Neue", Arial, sans-serif;
+      background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+      color: #e0e0e0;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* ===== 星空背景 ===== */
+    body::before,
+    body::after {
+      content: "";
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    body::before {
+      background:
+        radial-gradient(1px 1px at 10% 20%, rgba(255,255,255,0.8), transparent),
+        radial-gradient(1px 1px at 25% 50%, rgba(255,255,255,0.6), transparent),
+        radial-gradient(1.5px 1.5px at 40% 15%, rgba(200,200,255,0.7), transparent),
+        radial-gradient(1px 1px at 55% 70%, rgba(255,255,255,0.5), transparent),
+        radial-gradient(1.5px 1.5px at 70% 35%, rgba(200,200,255,0.8), transparent),
+        radial-gradient(1px 1px at 85% 60%, rgba(255,255,255,0.6), transparent),
+        radial-gradient(1px 1px at 15% 80%, rgba(255,255,255,0.5), transparent),
+        radial-gradient(1.5px 1.5px at 60% 90%, rgba(200,200,255,0.6), transparent),
+        radial-gradient(1px 1px at 90% 10%, rgba(255,255,255,0.7), transparent),
+        radial-gradient(1px 1px at 35% 40%, rgba(255,255,255,0.4), transparent);
+      animation: twinkle 4s ease-in-out infinite alternate;
+    }
+
+    body::after {
+      background:
+        radial-gradient(1px 1px at 5% 45%, rgba(255,255,255,0.6), transparent),
+        radial-gradient(1.5px 1.5px at 20% 75%, rgba(180,180,255,0.7), transparent),
+        radial-gradient(1px 1px at 45% 30%, rgba(255,255,255,0.5), transparent),
+        radial-gradient(1px 1px at 65% 55%, rgba(255,255,255,0.7), transparent),
+        radial-gradient(1.5px 1.5px at 80% 85%, rgba(180,180,255,0.6), transparent),
+        radial-gradient(1px 1px at 95% 40%, rgba(255,255,255,0.5), transparent),
+        radial-gradient(1px 1px at 50% 5%, rgba(255,255,255,0.6), transparent),
+        radial-gradient(1.5px 1.5px at 30% 95%, rgba(180,180,255,0.5), transparent);
+      animation: twinkle 5s ease-in-out infinite alternate-reverse;
+    }
+
+    @keyframes twinkle {
+      0% { opacity: 0.4; }
+      100% { opacity: 1; }
+    }
+
+    /* ===== 主容器 ===== */
+    .container {
+      position: relative;
+      z-index: 1;
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+
+    /* ===== Hero 区域 ===== */
+    .hero {
+      text-align: center;
+      padding: 80px 20px 60px;
+      animation: fadeInUp 1.2s ease-out;
+    }
+
+    .hero h1 {
+      font-size: 3rem;
+      font-weight: 700;
+      background: linear-gradient(90deg, #a78bfa, #818cf8, #c4b5fd);
+      background-size: 200% auto;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      animation: shimmer 3s linear infinite;
+      text-shadow: none;
+      margin-bottom: 16px;
+    }
+
+    .hero h1::after {
+      content: "";
+      display: block;
+      width: 60px;
+      height: 3px;
+      background: linear-gradient(90deg, transparent, #a78bfa, transparent);
+      margin: 20px auto 0;
+      border-radius: 2px;
+    }
+
+    .hero p {
+      font-size: 1.15rem;
+      color: #b8b8d0;
+      letter-spacing: 4px;
+      margin-top: 12px;
+    }
+
+    @keyframes shimmer {
+      0% { background-position: 0% center; }
+      100% { background-position: 200% center; }
+    }
+
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* ===== 通用区块标题 ===== */
+    .section-title {
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: #c4b5fd;
+      margin-bottom: 24px;
+      padding-left: 14px;
+      border-left: 3px solid #a78bfa;
+    }
+
+    /* ===== 作者有话 ===== */
+    .author-section {
+      margin-bottom: 60px;
+      animation: fadeInUp 1.2s ease-out 0.3s both;
+    }
+
+    .message-card {
+      background: rgba(255, 255, 255, 0.06);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 12px;
+      padding: 20px 24px;
+      margin-bottom: 16px;
+      transition: transform 0.3s ease, border-color 0.3s ease;
+    }
+
+    .message-card:hover {
+      transform: translateX(6px);
+      border-color: rgba(167, 139, 250, 0.3);
+    }
+
+    .message-date {
+      font-size: 0.8rem;
+      color: #8b8ba8;
+      margin-bottom: 8px;
+      font-family: "Courier New", monospace;
+    }
+
+    .message-text {
+      font-size: 0.95rem;
+      line-height: 1.7;
+      color: #d0d0e0;
+    }
+
+    /* ===== 游戏链接 ===== */
+    .games-section {
+      margin-bottom: 60px;
+      animation: fadeInUp 1.2s ease-out 0.6s both;
+    }
+
+    .games-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 20px;
+    }
+
+    .game-card {
+      display: block;
+      background: rgba(255, 255, 255, 0.06);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 12px;
+      padding: 28px 24px;
+      text-decoration: none;
+      color: inherit;
+      transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+      text-align: center;
+    }
+
+    .game-card:hover {
+      transform: translateY(-6px) scale(1.02);
+      box-shadow: 0 8px 30px rgba(167, 139, 250, 0.2);
+      border-color: rgba(167, 139, 250, 0.4);
+    }
+
+    .game-icon {
+      font-size: 2.2rem;
+      margin-bottom: 12px;
+      display: block;
+    }
+
+    .game-name {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: #e0e0f0;
+      margin-bottom: 8px;
+    }
+
+    .game-desc {
+      font-size: 0.82rem;
+      color: #9090b0;
+      line-height: 1.5;
+    }
+
+    /* ===== Footer ===== */
+    footer {
+      text-align: center;
+      padding: 40px 20px 30px;
+      color: #6060808a;
+      font-size: 0.82rem;
+      border-top: 1px solid rgba(255, 255, 255, 0.05);
+      animation: fadeInUp 1.2s ease-out 0.9s both;
+    }
+
+    /* ===== 响应式 ===== */
+    @media (max-width: 600px) {
+      .hero {
+        padding: 50px 16px 40px;
+      }
+
+      .hero h1 {
+        font-size: 2rem;
+      }
+
+      .hero p {
+        font-size: 1rem;
+        letter-spacing: 2px;
+      }
+
+      .section-title {
+        font-size: 1.25rem;
+      }
+
+      .games-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .message-card {
+        padding: 16px 18px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+
+    <!-- Hero 区域 -->
+    <header class="hero">
+      <h1>双鱼工作室 ♓️</h1>
+      <p>梦想启航之地</p>
+    </header>
+
+    <!-- 作者有话 -->
+    <section class="author-section">
+      <h2 class="section-title">作者有话</h2>
+
+      <div class="message-card">
+        <div class="message-date">2026-04-30</div>
+        <p class="message-text">工作室主页正式上线啦！未来会在这里分享开发日常和新游戏动态，敬请期待～</p>
+      </div>
+
+      <div class="message-card">
+        <div class="message-date">2026-04-28</div>
+        <p class="message-text">新项目正在紧锣密鼓地开发中，这次会带来全新的玩法体验，大家拭目以待！</p>
+      </div>
+
+      <div class="message-card">
+        <div class="message-date">2026-04-20</div>
+        <p class="message-text">感谢每一位关注双鱼工作室的朋友，你们的支持是我最大的动力。</p>
+      </div>
+
+      <!-- 添加更多动态：复制上面的 message-card 结构，修改日期和内容即可 -->
+    </section>
+
+    <!-- 游戏链接 -->
+    <section class="games-section">
+      <h2 class="section-title">我的游戏</h2>
+
+      <div class="games-grid">
+
+        <a class="game-card" href="https://example.com/game1" target="_blank" rel="noopener">
+          <span class="game-icon">🎮</span>
+          <div class="game-name">游戏名称 1</div>
+          <div class="game-desc">在这里写上游戏的简短介绍</div>
+        </a>
+
+        <a class="game-card" href="https://example.com/game2" target="_blank" rel="noopener">
+          <span class="game-icon">🌟</span>
+          <div class="game-name">游戏名称 2</div>
+          <div class="game-desc">在这里写上游戏的简短介绍</div>
+        </a>
+
+        <a class="game-card" href="https://example.com/game3" target="_blank" rel="noopener">
+          <span class="game-icon">🚀</span>
+          <div class="game-name">游戏名称 3</div>
+          <div class="game-desc">在这里写上游戏的简短介绍</div>
+        </a>
+
+        <!-- 添加更多游戏：复制上面的 game-card 结构，修改链接、图标、名称和描述即可 -->
+      </div>
+    </section>
+
+    <!-- 底部 -->
+    <footer>
+      &copy; 2026 双鱼工作室 All Rights Reserved.
+    </footer>
+
+  </div>
+
+</body>
+</html>
