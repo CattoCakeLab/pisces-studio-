@@ -567,6 +567,35 @@
       transform: translateY(0);
     }
 
+    .splash-char.scatter {
+      transition: opacity 1.5s ease-out, transform 1.5s ease-out;
+    }
+
+    .splash-char.gather {
+      transition: opacity 0.8s ease-in, transform 0.8s ease-in-out;
+      transform: translate(0, 0) rotate(0deg) scale(0.3) !important;
+      opacity: 0.6 !important;
+    }
+
+    #splash-flash {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(circle, rgba(255,255,255,0.9) 0%, rgba(255,255,255,0) 70%);
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    #splash-flash.active {
+      animation: flashPulse 0.6s ease-out forwards;
+    }
+
+    @keyframes flashPulse {
+      0% { opacity: 1; transform: scale(0.3); }
+      50% { opacity: 0.8; transform: scale(1); }
+      100% { opacity: 0; transform: scale(1.2); }
+    }
+
     #splash-studio {
       position: absolute;
       font-size: clamp(1.8rem, 5vw, 3rem);
@@ -616,6 +645,7 @@
   <!-- 开屏动画 -->
   <div id="splash-overlay">
     <div id="splash-motto"></div>
+    <div id="splash-flash"></div>
     <div id="splash-studio">双鱼工作室</div>
     <div id="splash-hint">点击任意处进入</div>
   </div>
@@ -669,28 +699,53 @@
       timers.push(tid);
     }
 
-    // ── 阶段2: 文字飞散 ──
+    // ── 阶段2: 文字碎裂散开 ──
     function startScatter() {
       if (done) return;
       var chars = mottoEl.querySelectorAll('.splash-char');
       for (var i = 0; i < chars.length; i++) {
-        var x = (Math.random() - 0.5) * 600;
-        var y = (Math.random() - 0.5) * 600;
-        var r = (Math.random() - 0.5) * 360;
-        var s = Math.random() * 0.3;
-        chars[i].style.transition = 'all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
-        chars[i].style.transform = 'translate(' + x + 'px,' + y + 'px) rotate(' + r + 'deg) scale(' + s + ')';
-        chars[i].style.opacity = '0';
+        var x = (Math.random() - 0.5) * 160;
+        var y = (Math.random() - 0.5) * 120;
+        var r = (Math.random() - 0.5) * 30;
+        var delay = i * 30;
+        (function (el, x, y, r, delay) {
+          timers.push(setTimeout(function () {
+            el.classList.add('scatter');
+            el.style.transform = 'translate(' + x + 'px,' + y + 'px) rotate(' + r + 'deg) scale(0.5)';
+            el.style.opacity = '0.3';
+          }, delay));
+        })(chars[i], x, y, r, delay);
       }
-      timers.push(setTimeout(showStudio, 800));
+      // 散开 1.2s 后开始重新聚拢
+      timers.push(setTimeout(function () { startGather(chars); }, chars.length * 30 + 1000));
     }
 
-    // ── 阶段3: 工作室名显现 ──
-    function showStudio() {
+    // ── 阶段3: 碎片重新聚拢 ──
+    function startGather(chars) {
       if (done) return;
-      mottoEl.style.display = 'none';
-      studioEl.classList.add('visible');
-      timers.push(setTimeout(finishSplash, 1200));
+      for (var i = 0; i < chars.length; i++) {
+        chars[i].classList.remove('scatter');
+        chars[i].classList.add('gather');
+        chars[i].style.transform = '';
+        chars[i].style.opacity = '';
+      }
+      // 聚拢 0.8s 后触发白光
+      timers.push(setTimeout(triggerFlash, 800));
+    }
+
+    // ── 阶段4: 白光闪烁 + 显示工作室名 ──
+    function triggerFlash() {
+      if (done) return;
+      var flash = document.getElementById('splash-flash');
+      mottoEl.style.opacity = '0';
+      mottoEl.style.transition = 'opacity 0.2s';
+      flash.classList.add('active');
+      // 白光闪过后显示工作室名
+      timers.push(setTimeout(function () {
+        mottoEl.style.display = 'none';
+        studioEl.classList.add('visible');
+        timers.push(setTimeout(finishSplash, 1200));
+      }, 400));
     }
 
     // ── 阶段4: 淡出并清理 ──
