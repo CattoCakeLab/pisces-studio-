@@ -5,14 +5,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>双鱼工作室 ♓️</title>
   <style>
-  @font-face {
+    @font-face {
       font-family: 'Zpix';
       src: url('https://cdn.jsdelivr.net/gh/SolidZORO/zpix-pixel-font@v3.1.11/dist/zpix.ttf') format('truetype');
       font-weight: normal;
       font-style: normal;
       font-display: swap;
     }
-
 
     * {
       margin: 0;
@@ -21,8 +20,7 @@
     }
 
     body {
-     font-family: "PingFang SC", "Microsoft YaHei", "Helvetica Neue", Arial, sans-serif;
-     font-family: 'Zpix', "PingFang SC", "Microsoft YaHei", "Helvetica Neue", Arial, sans-serif;
+      font-family: 'Zpix', "PingFang SC", "Microsoft YaHei", "Helvetica Neue", Arial, sans-serif;
       background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
       color: #e0e0e0;
       min-height: 100vh;
@@ -147,7 +145,7 @@
       border-left: 3px solid #a78bfa;
     }
 
- /* ===== 新游戏宣发 ===== */
+    /* ===== 新游戏宣发 ===== */
     .announce-section {
       margin-bottom: 60px;
       animation: fadeInUp 1.2s ease-out 0.3s both;
@@ -360,11 +358,10 @@
       background: #a78bfa;
       transform: scale(1.3);
     }
-    
+
     /* ===== 作者有话 ===== */
     .author-section {
       margin-bottom: 60px;
-      animation: fadeInUp 1.2s ease-out 0.3s both;
       animation: fadeInUp 1.2s ease-out 0.6s both;
     }
 
@@ -400,7 +397,6 @@
     /* ===== 游戏链接 ===== */
     .games-section {
       margin-bottom: 60px;
-      animation: fadeInUp 1.2s ease-out 0.6s both;
       animation: fadeInUp 1.2s ease-out 0.9s both;
     }
 
@@ -456,7 +452,6 @@
       color: #6060808a;
       font-size: 0.82rem;
       border-top: 1px solid rgba(255, 255, 255, 0.05);
-      animation: fadeInUp 1.2s ease-out 0.9s both;
       animation: fadeInUp 1.2s ease-out 1.2s both;
     }
 
@@ -494,20 +489,252 @@
       .scroll-arrow {
         display: none;
       }
-      
+
       .message-card {
         padding: 16px 18px;
       }
+
+      #splash-motto {
+        font-size: 1.2rem;
+      }
+
+      #splash-studio {
+        font-size: 1.6rem;
+      }
+
+      #splash-hint {
+        bottom: 24px;
+      }
+    }
+
+    /* ===== 开屏动画 ===== */
+    body.splash-active {
+      overflow: hidden;
+    }
+
+    body.splash-active .hero,
+    body.splash-active .announce-section,
+    body.splash-active .author-section,
+    body.splash-active .games-section,
+    body.splash-active footer {
+      animation: none !important;
+      opacity: 0;
+      transform: translateY(30px);
+    }
+
+    #splash-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 999;
+      background: #0a0820;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      transition: opacity 0.5s ease;
+    }
+
+    #splash-overlay.splash-fading {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    #splash-motto {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      align-items: center;
+      gap: 4px;
+      max-width: 80vw;
+      font-size: clamp(1.4rem, 4vw, 2.2rem);
+      color: #e0e0f0;
+      letter-spacing: 2px;
+      position: absolute;
+    }
+
+    .splash-char {
+      display: inline-block;
+      opacity: 0;
+      transform: translateY(8px);
+      transition: opacity 0.25s ease, transform 0.25s ease;
+    }
+
+    .splash-char.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    #splash-studio {
+      position: absolute;
+      font-size: clamp(1.8rem, 5vw, 3rem);
+      font-weight: 700;
+      opacity: 0;
+      transform: scale(0.9);
+      transition: opacity 0.6s ease, transform 0.6s ease, text-shadow 0.6s ease;
+      text-shadow: 0 0 0 #a78bfa;
+      background: linear-gradient(90deg, #a78bfa, #818cf8, #c4b5fd, #818cf8, #a78bfa);
+      background-size: 300% auto;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    #splash-studio.visible {
+      opacity: 1;
+      transform: scale(1);
+      text-shadow: 0 0 20px rgba(167, 139, 250, 0.6), 0 0 40px rgba(167, 139, 250, 0.3), 0 0 80px rgba(167, 139, 250, 0.1);
+      animation: splashShimmer 2s linear infinite;
+    }
+
+    @keyframes splashShimmer {
+      0% { background-position: 0% center; }
+      100% { background-position: 300% center; }
+    }
+
+    #splash-hint {
+      position: absolute;
+      bottom: 40px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: clamp(0.7rem, 2vw, 0.85rem);
+      color: #9090b0;
+      animation: hintBreath 2s ease-in-out infinite;
+      white-space: nowrap;
+    }
+
+    @keyframes hintBreath {
+      0%, 100% { opacity: 0.3; }
+      50% { opacity: 0.7; }
     }
   </style>
 </head>
 <body>
 
+  <!-- 开屏动画 -->
+  <div id="splash-overlay">
+    <div id="splash-motto"></div>
+    <div id="splash-studio">双鱼工作室</div>
+    <div id="splash-hint">点击任意处进入</div>
+  </div>
+
+  <script>
+  (function () {
+    var overlay = document.getElementById('splash-overlay');
+    var mottoEl = document.getElementById('splash-motto');
+    var studioEl = document.getElementById('splash-studio');
+    var motto = '愿人们始终拥有去想象和创造的勇气';
+    var timers = [];
+    var done = false;
+
+    // 同步添加 splash-active，阻止页面动画
+    document.body.classList.add('splash-active');
+
+    // prefers-reduced-motion 检测
+    if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      finishSplash();
+      return;
+    }
+
+    // 等待字体（最多 300ms）后开始
+    Promise.race([
+      document.fonts ? document.fonts.ready : Promise.resolve(),
+      new Promise(function (r) { timers.push(setTimeout(r, 300)); })
+    ]).then(startTyping);
+
+    // ── 阶段1: 逐字打出 ──
+    function startTyping() {
+      if (done) return;
+      var chars = [];
+      for (var i = 0; i < motto.length; i++) {
+        var span = document.createElement('span');
+        span.className = 'splash-char';
+        span.textContent = motto[i];
+        mottoEl.appendChild(span);
+        chars.push(span);
+      }
+      var idx = 0;
+      var tid = setInterval(function () {
+        if (done) { clearInterval(tid); return; }
+        if (idx < chars.length) {
+          chars[idx].classList.add('visible');
+          idx++;
+        } else {
+          clearInterval(tid);
+          timers.push(setTimeout(startScatter, 300));
+        }
+      }, 80);
+      timers.push(tid);
+    }
+
+    // ── 阶段2: 文字飞散 ──
+    function startScatter() {
+      if (done) return;
+      var chars = mottoEl.querySelectorAll('.splash-char');
+      for (var i = 0; i < chars.length; i++) {
+        var x = (Math.random() - 0.5) * 600;
+        var y = (Math.random() - 0.5) * 600;
+        var r = (Math.random() - 0.5) * 360;
+        var s = Math.random() * 0.3;
+        chars[i].style.transition = 'all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
+        chars[i].style.transform = 'translate(' + x + 'px,' + y + 'px) rotate(' + r + 'deg) scale(' + s + ')';
+        chars[i].style.opacity = '0';
+      }
+      timers.push(setTimeout(showStudio, 800));
+    }
+
+    // ── 阶段3: 工作室名显现 ──
+    function showStudio() {
+      if (done) return;
+      mottoEl.style.display = 'none';
+      studioEl.classList.add('visible');
+      timers.push(setTimeout(finishSplash, 1200));
+    }
+
+    // ── 阶段4: 淡出并清理 ──
+    function finishSplash() {
+      if (done) return;
+      done = true;
+      // 清除所有定时器
+      for (var i = 0; i < timers.length; i++) {
+        clearTimeout(timers[i]);
+      }
+      overlay.classList.add('splash-fading');
+      var cleaned = false;
+      function cleanup() {
+        if (cleaned) return;
+        cleaned = true;
+        if (overlay.parentNode) overlay.parentNode.removeChild(overlay);
+        document.body.classList.remove('splash-active');
+      }
+      overlay.addEventListener('transitionend', cleanup);
+      // 备用 timeout 兜底
+      setTimeout(cleanup, 600);
+    }
+
+    // ── 跳过处理 ──
+    overlay.addEventListener('click', finishSplash);
+    overlay.addEventListener('touchend', function (e) {
+      e.preventDefault();
+      finishSplash();
+    });
+    document.addEventListener('keydown', function onKey(e) {
+      if (e.code === 'Enter' || e.code === 'Space') {
+        e.preventDefault();
+        finishSplash();
+        document.removeEventListener('keydown', onKey);
+      }
+    });
+  })();
+  </script>
+
   <div class="container">
 
     <!-- Hero 区域 -->
     <header class="hero">
-      <h1>双鱼工作室 </h1>
+      <h1>双鱼工作室 ♓️</h1>
       <p>Pisces Studio</p>
       <p>梦想启航之地</p>
     </header>
@@ -564,7 +791,7 @@
 
       <div class="announce-dots" id="announceDots"></div>
     </section>
-    
+
     <!-- 作者有话 -->
     <section class="author-section">
       <h2 class="section-title">作者有话</h2>
@@ -599,6 +826,11 @@
           <div class="game-desc">一封匿名邮件，一场人格测试……</div>
         </a>
 
+        <a class="game-card" href="focus.html">
+          <span class="game-icon">🍅</span>
+          <div class="game-name">专注助手</div>
+          <div class="game-desc">番茄钟 + 任务打卡，高效专注每一刻</div>
+        </a>
 
         <a class="game-card" href="https://example.com/game3" target="_blank" rel="noopener">
           <span class="game-icon">🚀</span>
@@ -617,7 +849,7 @@
 
   </div>
 
-   <script>
+  <script>
   (function () {
     var track = document.getElementById('announceTrack');
     var leftBtn = document.getElementById('scrollLeft');
@@ -687,6 +919,6 @@
     updateControls();
   })();
   </script>
-  
+
 </body>
 </html>
